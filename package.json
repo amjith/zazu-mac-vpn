@@ -1,0 +1,14 @@
+{
+  "name": "zazu-mac-vpn",
+  "version": "1.0.0",
+  "description": "Toggle VPN.",
+  "icon": "assets/vpn.png",
+  "keywords": [
+    "zazu"
+  ],
+  "author": "Amjith Ramanujam",
+  "license": "MIT",
+  "dependencies": {
+    "fuzzyfind": "^2.0.0"
+  }
+}
