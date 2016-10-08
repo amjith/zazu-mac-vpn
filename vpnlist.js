@@ -1,4 +1,4 @@
-const fs = require('fs')
+const child_process = require('child_process')
 const path = require('path')
 const fuzzyfind = require('fuzzyfind')
 
@@ -8,18 +8,19 @@ module.exports = (pluginContext) => {
   const { cwd } = pluginContext
   return (query, env) => {
     return new Promise((resolve, reject) => {
-      fs.readFile(path.join(cwd, file), (err, data) => {
+      const cmd = 'scutil --nc list'
+      child_process.exec(cmd, (err, stdout, stderr) => {
         if (err) { reject(err) }
-        const vpnlist = data.toString()
-          .split('\n')
-          .filter(item => item.match(/\|0/))
+        const vpnlist = stdout.split('\n').filter(vpn => vpn.match(/ipsec/i))
           .map((item) => {
-            const [name, value] = item.split('|')
+            const [_, connection, value] = item.match(/\((.*)\).*"(.*)"/)
+            const connected = connection === 'Connected'
             return {
-              title: name,
+              title: value,
+              icon: (connected) ? 'fa-stop' : 'fa-play',
               value: {
-                name: name,
-                connected: value === '1',
+                name: value,
+                connected: connected,
               }
             }
           })
