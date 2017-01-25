@@ -16,6 +16,7 @@ module.exports = (pluginContext) => {
             const [_, connection, value] = item.match(/\((.*)\).*"(.*)"/)
             const connected = connection === 'Connected'
             return {
+              id: value,
               title: value,
               icon: (connected) ? 'fa-stop' : 'fa-play',
               value: {
